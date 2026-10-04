@@ -15,6 +15,13 @@ done
 
 # Korean Windows defaults Python to cp949, which breaks core/ reading UTF-8 JSON.
 export PYTHONUTF8=1
+# The native claude installer puts claude in ~/.local/bin; a shell opened
+# before that was added to PATH would not find it.
+[ -d "$HOME/.local/bin" ] && export PATH="$HOME/.local/bin:$PATH"
+if ! command -v claude >/dev/null; then
+  echo "ERROR: claude not found on PATH" >&2
+  exit 1
+fi
 
 CYCLES="${1:-1}"
 SLEEP_MIN="${2:-45}"
